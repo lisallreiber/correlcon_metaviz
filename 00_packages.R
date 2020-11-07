@@ -1,16 +1,11 @@
-require(devtools) || install.packages("devtools")
-library("devtools")
+# script loads functions needed in this project
 
 require(pacman) || install.packages("pacman")
 library("pacman")
 
-# packages from github
-# require(formr) || devtools::install_github("rubenarslan/formr")
-
 pacman::p_load(
-               # broom,
                # codebook, package to generate automated codebooks, works well for labelled data and SOEP data
-               here, # package to specify opaths within R-projects
+               here, # package to specify paths within R-projects
                forcats, # package for working with factors
                # janitor, # package for data cleaning
                knitr, # package for RMarkdown
