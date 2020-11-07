@@ -1,0 +1,34 @@
+name: Metadata Viz
+output_dir: "docs"
+exclude: ['*.rda', "*.csv", '*.pdf', '*.dta', '*.csv', '*.csl', '*.bibtex', '*.docx', "data"]
+navbar:
+  title: Gene Analysis
+  left:
+  - text: "Overview"
+    href: index.html
+  - text: "Data Preparation"
+    menu:
+    - text: "Import Data & Create Dataset"
+      href: 00_import_data.html
+  - text: "Data Description"
+    menu:
+    - text: "Visual Plots (synthetic data)"
+      href: p1_describe_plots.html
+  - text: "Data Analysis"
+    menu:
+    - text: "here could be your analysis output"
+      href: to be filled in
+  - text: "Results"
+    menu:
+    - text: "here could be your main results"
+      href: to be filled in
+  right:
+  - text: ''
+    icon: fa-github
+    href: https://github.com/lisallreiber
+output:
+  html_document:
+    theme: cerulean
+    highlight: default
+    df_print: tibble
+

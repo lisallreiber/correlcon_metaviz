@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Plot My-Sample</title>
+
+<script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Gene Analysis</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Overview</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data Preparation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="00_import_data.html">Import Data &amp; Create Dataset</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data Description
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="p1_describe_plots.html">Visual Plots (synthetic data)</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="to be filled in">here could be your analysis output</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Results
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="to be filled in">here could be your main results</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/lisallreiber">
+    <span class="fa fa-github"></span>
+     
+    
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Plot My-Sample</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#explore-data-for-gene-analysis">Explore Data for Gene Analysis</a>
+<ul>
+<li><a href="#all-variables">All variables</a>
+<ul>
+<li><a href="#by-year">By Year</a></li>
+<li><a href="#overall">Overall</a></li>
+<li><a href="#by-year-1">By Year</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#supplement">Supplement</a>
+<ul>
+<li><a href="#resources">resources</a></li>
+</ul></li>
+</ul>
+</div>
+
+<pre class="r"><code>metaviz_long &lt;- rio::import(here::here(&quot;data&quot;, &quot;metaviz_long.rds&quot;))</code></pre>
+<div id="explore-data-for-gene-analysis" class="section level1">
+<h1>Explore Data for Gene Analysis</h1>
+<div id="all-variables" class="section level2 tabset">
+<h2 class="tabset">All variables</h2>
+<div id="by-year" class="section level3">
+<h3>By Year</h3>
+<p>First you can see the number of available observation for each variable in each year</p>
+<ul>
+<li>x-axis = survey year</li>
+<li>y-axis = variables</li>
+<li>size = number of observations</li>
+<li>colour = variable group</li>
+</ul>
+<pre class="r"><code>metaviz_long %&gt;% 
+      drop_na(value) %&gt;% 
+      mutate(key_name_label = factor(key_name_label),
+             order = as.numeric(key_category),
+             key_name_label = fct_reorder(key_name_label, desc(order))) %&gt;% 
+      ggplot(aes(key_name_label, syear, col = key_category)) +
+      geom_count() +
+      coord_flip() +
+      theme(legend.position=&quot;right&quot;,
+           plot.title.position = &quot;plot&quot;) + #so cool &lt;3) 
+      guides(col = guide_legend(ncol = 1)) +
+      scale_x_discrete(labels = wrap_format(40))+
+      scale_y_continuous(limits= c(1998, 2018), breaks = seq(1998,2018,2))+
+      labs(title = &quot;Number of observations for selected SOEP variables from 1998 - 2018&quot;,
+           subtitle = &quot;Size indicates number of observations&quot;,
+           y = &quot;&quot;, x = &quot;&quot;)</code></pre>
+<p><img src="p1_describe_plots_files/figure-html/unnamed-chunk-1-1.png" width="1056" /></p>
+</div>
+<div id="overall" class="section level3">
+<h3>Overall</h3>
+<p>Here is an overall plot of the number of available observations for each of the variables. It helps to get a general understanding of the proportions of missings for groups of variables</p>
+<pre class="r"><code>metaviz_long %&gt;% 
+      drop_na(value) %&gt;% 
+      filter(key_category != &quot;Psych. Measure&quot;) %&gt;% 
+      group_by(key) %&gt;% 
+      add_count() %&gt;% 
+      ungroup() %&gt;% 
+      distinct(key, .keep_all = T) %&gt;% 
+      group_by(key_category) %&gt;% 
+      mutate(key_name_label = fct_reorder(factor(key_name_label), n)) %&gt;% 
+      ggplot(aes(x = key_name_label, y = n, fill = key_category, label = n)) +
+      geom_col(width = 0.2) +
+      geom_point() +
+      geom_label(color = &quot;white&quot;, size = 2) +
+      coord_flip() +
+      scale_y_continuous(labels = scales::label_number_auto()) +
+      scale_x_discrete(labels = wrap_format(40))+
+      theme_light() +
+      theme(legend.position = &quot;none&quot;) +
+      facet_wrap(~key_category, ncol = 1, scales = &quot;free&quot;) +
+      labs(title = &quot;Overall Number of observations for selected SOEP variables from 1998 - 2018&quot;, y = &quot;&quot;, x = &quot;&quot;) </code></pre>
+<p><img src="p1_describe_plots_files/figure-html/unnamed-chunk-2-1.png" width="1056" /> ## By Variable Category {.tabset}</p>
+</div>
+<div id="by-year-1" class="section level3">
+<h3>By Year</h3>
+<div id="ids" class="section level4">
+<h4>ID’s</h4>
+<pre class="r"><code>metaviz_long %&gt;% 
+      drop_na(value) %&gt;% 
+      filter(key_category == &quot;ID&#39;s&quot;) %&gt;%
+      ggplot(aes(key_name_label, syear)) +
+      geom_count(col= &quot;#440154FF&quot;) +
+      coord_flip() +
+      theme(legend.position=&quot;right&quot;) +
+      scale_x_discrete(labels = wrap_format(40))+
+      scale_y_continuous(limits= c(1998, 2018), breaks = seq(1998,2018,2)) +
+      labs(title = &quot;Number of observations for selected SOEP variables from 1998 - 2018&quot;,
+           subtitle = &quot;Size indicates number of observations&quot;,
+           y = &quot;&quot;, x = &quot;&quot;) </code></pre>
+<p><img src="p1_describe_plots_files/figure-html/unnamed-chunk-3-1.png" width="960" /></p>
+</div>
+<div id="survey" class="section level4">
+<h4>Survey</h4>
+<pre class="r"><code>metaviz_long %&gt;% 
+      drop_na(value) %&gt;% 
+      filter(key_category == &quot;Survey&quot;) %&gt;%
+      ggplot(aes(key_name_label, syear)) +
+      geom_count(col= &quot;#3B528BFF&quot;) +
+      coord_flip() +
+      theme(legend.position=&quot;right&quot;) +
+      scale_x_discrete(labels = wrap_format(40))+
+      scale_y_continuous(limits= c(1998, 2018), breaks = seq(1998,2018,2)) +
+      labs(title = &quot;Number of observations for selected SOEP variables from 1998 - 2018&quot;,
+           subtitle = &quot;Size indicates number of observations&quot;,
+           y = &quot;&quot;, x = &quot;&quot;) </code></pre>
+<p><img src="p1_describe_plots_files/figure-html/unnamed-chunk-4-1.png" width="960" /></p>
+</div>
+<div id="demography" class="section level4">
+<h4>Demography</h4>
+<pre class="r"><code>metaviz_long %&gt;% 
+      drop_na(value) %&gt;% 
+      filter(key_category == &quot;Demography&quot;) %&gt;%
+      ggplot(aes(key_name_label, syear)) +
+      geom_count(col= &quot;#21908CFF&quot;) +
+      coord_flip() +
+      theme(legend.position=&quot;right&quot;) +
+      scale_x_discrete(labels = wrap_format(40))+
+      scale_y_continuous(limits= c(1998, 2018), breaks = seq(1998,2018,2)) +
+      labs(title = &quot;Number of observations for selected SOEP variables from 1998 - 2018&quot;,
+           subtitle = &quot;Size indicates number of observations&quot;,
+           y = &quot;&quot;, x = &quot;&quot;)  </code></pre>
+<p><img src="p1_describe_plots_files/figure-html/unnamed-chunk-5-1.png" width="960" /></p>
+</div>
+<div id="psychol.-measures" class="section level4">
+<h4>Psychol. Measures</h4>
+<pre class="r"><code>metaviz_long %&gt;% 
+      drop_na(value) %&gt;% 
+      filter(key_category == &quot;Psych. Measure&quot;) %&gt;%
+      ggplot(aes(key_name_label, syear)) +
+      geom_count(col = &quot;#5DC863FF&quot;) +
+      coord_flip() +
+      theme(legend.position=&quot;right&quot;) +
+      scale_x_discrete(labels = wrap_format(40))+
+      scale_y_continuous(limits= c(1998, 2018), breaks = seq(1998,2018,2)) +
+      labs(title = &quot;Number of observations for selected SOEP variables from 1998 - 2018&quot;,
+           subtitle = &quot;Size indicates number of observations&quot;,
+           y = &quot;&quot;, x = &quot;&quot;) </code></pre>
+<p><img src="p1_describe_plots_files/figure-html/unnamed-chunk-6-1.png" width="960" /></p>
+</div>
+<div id="other" class="section level4">
+<h4>Other</h4>
+<pre class="r"><code>metaviz_long %&gt;% 
+      drop_na(value) %&gt;% 
+      filter(key_category == &quot;Other&quot;) %&gt;%
+      ggplot(aes(key_name_label, syear)) +
+      geom_count(col = &quot;#FDE725FF&quot;) +
+      coord_flip() +
+      theme(legend.position=&quot;right&quot;) +
+      scale_x_discrete(labels = wrap_format(40))+
+      scale_y_continuous(limits= c(1998, 2018), breaks = seq(1998,2018,2)) +
+      labs(title = &quot;Number of observations for selected SOEP variables from 1998 - 2018&quot;,
+           subtitle = &quot;Size indicates number of observations&quot;,
+           y = &quot;&quot;, x = &quot;&quot;) </code></pre>
+<p><img src="p1_describe_plots_files/figure-html/unnamed-chunk-7-1.png" width="960" /></p>
+</div>
+</div>
+</div>
+</div>
+<div id="supplement" class="section level1">
+<h1>Supplement</h1>
+<div id="resources" class="section level2">
+<h2>resources</h2>
+<ul>
+<li>row names to column: <a href="https://stackoverflow.com/questions/29511215/convert-row-names-into-first-column" class="uri">https://stackoverflow.com/questions/29511215/convert-row-names-into-first-column</a></li>
+<li>age categories: <a href="https://ggplot2.tidyverse.org/reference/cut_interval.html" class="uri">https://ggplot2.tidyverse.org/reference/cut_interval.html</a></li>
+<li>wrap label names: <a href="https://stackoverflow.com/questions/21878974/auto-wrapping-of-labels-via-labeller-label-wrap-in-ggplot2" class="uri">https://stackoverflow.com/questions/21878974/auto-wrapping-of-labels-via-labeller-label-wrap-in-ggplot2</a></li>
+</ul>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

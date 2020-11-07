@@ -1,0 +1,142 @@
+---
+title: "Import Data: Relevant data for the project"
+output: 
+ html_document:
+   toc: true
+   toc_float: true
+   toc_depth: 3
+   code_folding: show
+   df_print: tibble
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE, warning = TRUE) 
+
+#' show two significant digits tops
+options(digits = 2)
+#' tend not to show scientific notation, because we're just psychologists
+options(scipen = 7)
+#' make output a bit wider
+options(width = 190)
+#' set a seed to make analyses depending on random number generation reproducible
+set.seed(2411) # if you use your significant other's birthday make sure you stay together for the sake of reproducibility
+
+options("tidylog.display" = list())
+
+source(here::here("00_packages.R"))
+source(here::here("00_functions.R"))
+```
+
+```{r set-options, echo=FALSE, cache=FALSE}
+options(width = 110)
+```
+
+# Create Data for the Variable Overview
+
+This markdown outlines the process in which synthetic SOEP-IS data is
+
+__Procedure__
+
+- 1. Import synthetic SOEP data 
+- 2. Reformat them for visualization
+- 3. Add descriptive Information (Variable Labels)
+
+__Data Structure (ID's)__
+      
+- format: the initial dataset `soepisv34` will be in **SOEP-long format** and on the **person level**, meaning that unique individuals may have multiple rows in the dataset for multiple time points (survey years). The rows in the data will NOT be uniquely identifiable by Person ID 'pid' alone, but in the combination of person ID `pid` and time `syear`.
+- the data is based on persons and not on households, meaning that there can be multiple (person) rows for one household ID `hid`.
+- the data contains information theoretically collected between 1998 and 2017 (for now).
+
+# 1. Import Data
+
+```{r eval=FALSE, include=FALSE}
+# this chunks contains the code for how the synthetic data was created. All values that contain information from people were recoded to 1 unless they were missing. Only the information about the syear is retained.
+
+soepisv34 <- rio::import(here::here("data/soepisv34.rds"))
+
+soep_syn <- soepisv34 %>% 
+      select(-cid) %>% 
+      # recode negative values to NA
+      codebook::detect_missing(learn_from_labels = T,
+                               negative_values_are_missing = T,
+                               only_labelled = F) %>% 
+      mutate_at(vars(-syear), ~ifelse(is.na(.x), NA, 1)) %>% 
+      mutate(pid = seq(1, nrow(soepisv34)),
+             hid = stringi::stri_rand_strings(nrow(soepisv34), 5)) %>% 
+      select(syear, pid, everything()) 
+
+metaviz <- soep_syn %>% 
+      sample_n((nrow(soep_syn) / 10))
+
+key_labels <- labelled::var_label(soepisv34) %>% 
+      as_tibble(rownames = c("key_name", "key_label")) %>% 
+      gather(key = key_name, value = key_label)
+
+rio::export(metaviz, here::here("data", "metaviz.rds"))
+rio::export(soep_syn, here::here("data", "soep_syn.rds"))
+rio::export(key_labels, here::here("data", "key_labels.rds"))
+
+```
+
+```{r import data}
+metaviz <- rio::import(here::here("data/metaviz.rds"))
+key_labels <- rio::import(here::here("data/key_labels.rds"))
+```
+
+# 2. Generate tidy formats
+
+## 2.1: make key_features column
+```{r}
+id <- c("syear", "pid", "cid", "hid", "kidpnr", 
+        "fpid", "mpid", "pgpartnr", "pgpartz", 
+        "k_pheadp", "k_pheadp", "k_pmum", "k_pmump")
+survey <- c("psample", "netto", "stell", "stell1", "salivaerg")
+demogr <- c("sex", "gebjahr", "gebmonat", "pgbilzt")
+psych <- c("iabm", "iabaut", "cogtest", "forgive", "selfworth", 
+           "optimism", "trust", "recip", "b5", "patience", "risk")
+other <- c("nums", "numb", "biochild", "k_rel")
+
+key_features <- key_labels %>% 
+      mutate(key_category = case_when(key_name %in% id ~ "ID's",
+                                      str_detect(key_name, "kidpnr") ~ "ID's",
+                                      key_name %in% survey ~ "Survey",
+                                      key_name %in% demogr ~ "Demography",
+                                      key_name %in% other ~ "Other",
+                                      TRUE ~ "Psych. Measure"
+                                      ),
+             key_category = ordered(key_category, levels = c("ID's", "Survey", "Demography",
+                                                             "Psych. Measure", "Other") )
+      )
+```
+
+## 2.2: reformat format (syear)
+
+now we create an additional dataset which is long in the sense that all variables are represented in the `key`column and all corresponding values in a `value` column. 
+
+the data is uniquely identifiable by: syear, pid, key
+```{r cache.lazy = FALSE}
+metaviz_long <- metaviz %>% 
+   tidyr::pivot_longer(cols = c(-syear, -pid, -hid), names_to = "key", values_to = "value")
+
+# https://stackoverflow.com/questions/39417003/long-vectors-not-supported-yet-error-in-rmd-but-not-in-r-script
+```
+
+now we add labels from key_features generated above
+```{r}
+metaviz_long <- metaviz_long %>% 
+   left_join(key_features, by = c("key" = "key_name")) %>% 
+   mutate(key_name_label = paste0(key, ": ", key_label))
+```
+
+and export the format
+```{r}
+rio::export(metaviz_long, here::here("data", "metaviz_long.rds"))
+```
+
+# Supplement
+
+## searches
+- how to extract var names and var labels: https://stackoverflow.com/questions/57552015/how-to-extract-column-variable-attributes-labels-from-r-to-csv-or-excel
+- how to even better extract them (labelled package): https://stackoverflow.com/questions/34817457/convenient-way-to-access-variables-label-after-importing-stata-data-with-haven

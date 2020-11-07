@@ -1,0 +1,25 @@
+---
+pagetitle: My-Project Title
+---
+  
+# My-Project Name 
+
+## Outline {.active}
+
+1. **Data Processing:**       First we [read the synthetic SOEP-IS data into R](00_import_data.html), and create the datasets needed for further analysis.
+2. **Data Description:**      Here we can look at some [descriptive plots](p1_describe_plots.html) of the iGENE Sample.
+3. **Data Analysis:**         Future
+4. **Documentation:**         [Here](00_codebook.html) you can find an example codebook of the underlying data. (Created with the [codebook package](https://github.com/rubenarslan/codebook) by Ruben Arslan)
+ 
+  
+## Authors & Acknowledgements {.tabset .tabset-sticky}
+
+### Authors
+of the code: Lisa Reiber 
+(to be updated)
+
+### Acknowledgements {.active}
+A big thank you to Ruben Arslan for development of reproducible visualization of research projects on the web (repro-web-stack) [click here for more Info](https://github.com/rubenarslan/repro_web_stack)
+
+
+### References
