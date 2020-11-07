@@ -36,9 +36,6 @@ vignettes/*.pdf
 rsconnect/
 .Rproj.user
 
-# data folder
-data/
-
 #data general
 *.rds
 *.dta
