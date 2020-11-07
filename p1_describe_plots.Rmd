@@ -13,7 +13,6 @@ output:
 editor_options:
   chunk_output_type: inline
 ---
-
  
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache = TRUE, warning = FALSE) 
@@ -29,7 +28,7 @@ options(width = 100)
 metaviz_long <- rio::import(here::here("data", "metaviz_long.rds"))
 ```
 
-# Explore Data for Gene Analysis 
+# Explore Data for My-Project
 
 ## All variables {.tabset}
   
@@ -40,8 +39,42 @@ First you can see the number of available observation for each variable in each 
 - x-axis = survey year
 - y-axis = variables
 - size = number of observations
-- colour = variable group
+- color = variable group
 
+empty plot
+```{r}
+metaviz_long %>% 
+      drop_na(value) %>% 
+      mutate(key_name_label = factor(key_name_label),
+             order = as.numeric(key_category),
+             key_name_label = fct_reorder(key_name_label, desc(order))) %>% 
+      ggplot(aes(key_name_label, syear, col = key_category))
+```
+
+with data points
+```{r}
+metaviz_long %>% 
+      drop_na(value) %>% 
+      mutate(key_name_label = factor(key_name_label),
+             order = as.numeric(key_category),
+             key_name_label = fct_reorder(key_name_label, desc(order))) %>% 
+      ggplot(aes(key_name_label, syear, col = key_category)) +
+      geom_count() 
+```
+
+flip the axis
+```{r}
+metaviz_long %>% 
+      drop_na(value) %>% 
+      mutate(key_name_label = factor(key_name_label),
+             order = as.numeric(key_category),
+             key_name_label = fct_reorder(key_name_label, desc(order))) %>% 
+      ggplot(aes(key_name_label, syear, col = key_category)) +
+      geom_count() +
+      coord_flip()
+```
+
+final plot
 ```{r, fig.height= 25, fig.width = 11}
 metaviz_long %>% 
       drop_na(value) %>% 
