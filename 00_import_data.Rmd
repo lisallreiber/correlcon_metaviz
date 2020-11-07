@@ -26,7 +26,6 @@ set.seed(2411) # if you use your significant other's birthday make sure you stay
 options("tidylog.display" = list())
 
 source(here::here("00_packages.R"))
-source(here::here("00_functions.R"))
 ```
 
 ```{r set-options, echo=FALSE, cache=FALSE}
