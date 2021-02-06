@@ -84,11 +84,11 @@ metaviz_long %>%
       ggplot(aes(key_name_label, syear, col = key_category)) +
       geom_count() +
       coord_flip() +
-      theme(legend.position="right",
+      theme(legend.position = "right",
            plot.title.position = "plot") + #so cool <3) 
       guides(col = guide_legend(ncol = 1)) +
-      scale_x_discrete(labels = wrap_format(40))+
-      scale_y_continuous(limits= c(1998, 2018), breaks = seq(1998,2018,2))+
+      scale_x_discrete(labels = wrap_format(40)) +
+      scale_y_continuous(limits = c(1998, 2018), breaks = seq(1998,2018,2)) +
       labs(title = "Number of observations for selected SOEP variables from 1998 - 2018",
            subtitle = "Size indicates number of observations",
            y = "", x = "")
@@ -116,7 +116,7 @@ metaviz_long %>%
       geom_label(color = "white", size = 2) +
       coord_flip() +
       scale_y_continuous(labels = scales::label_number_auto()) +
-      scale_x_discrete(labels = wrap_format(40))+
+      scale_x_discrete(labels = wrap_format(40)) +
       theme_light() +
       theme(legend.position = "none") +
       facet_wrap(~key_category, ncol = 1, scales = "free") +
